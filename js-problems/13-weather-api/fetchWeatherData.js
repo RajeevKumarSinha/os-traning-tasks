@@ -44,16 +44,33 @@ const usaCities = [
 ];
 
 const fetchWeather = async function (cities, myKey = apiKey) {
-  const citiesWeather = []; // array to store fetched data
-  for (const city of cities) {
-    // loop over cities array
-    const cityWeather = await getJson(
-      // cityWeather will store after fetching data of a single city from cities array
+  //////////////////////////////////////////////old(__this code make api calls one at a time__) {
+
+  // const citiesWeather = []; // array to store fetched data
+  // for (const city of cities) {
+  //   // loop over cities array
+  //   const cityWeather = await getJson(
+  //     // cityWeather will store after fetching data of a single city from cities array
+  //     `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${myKey}`
+  //   );
+  //   citiesWeather.push(cityWeather); // adding feched city weather object into citiesWeather array
+  // }
+  // citiesWeather.forEach((weather, index) => showWeather(weather, index)); // calling showWeather fn to display fetched data.
+  //////////////////////////////////////////////old(__this code make api calls one at a time__) {
+
+  //////////////////////////////////////////////new(__this code make all the apiCalls at a time__) (){
+
+  const urlCities = cities.map((city) =>
+    getJson(
       `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${myKey}`
-    );
-    citiesWeather.push(cityWeather); // adding feched city weather object into citiesWeather array
-  }
+    )
+  );
+
+  const [...citiesWeather] = await Promise.all(urlCities);
+  console.log(citiesWeather);
   citiesWeather.forEach((weather, index) => showWeather(weather, index)); // calling showWeather fn to display fetched data.
+
+  //////////////////////////////////////////////new }
 };
 
 async function getJson(url) {
