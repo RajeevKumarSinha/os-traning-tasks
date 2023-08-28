@@ -66,7 +66,7 @@ const fetchWeather = async function (cities, myKey = apiKey) {
     )
   );
 
-  const [...citiesWeather] = await Promise.all(urlCities);
+  const citiesWeather = await Promise.all(urlCities);
   console.log(citiesWeather);
   citiesWeather.forEach((weather, index) => showWeather(weather, index)); // calling showWeather fn to display fetched data.
 
